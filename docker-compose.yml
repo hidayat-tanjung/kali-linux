@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  kali:
+    image: kalilinux/kali-rolling
+    container_name: kali_linux
+    tty: true
+    stdin_open: true
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - kali_data:/root
+    networks:
+      - kali_network
+    environment:
+      - DISPLAY=${DISPLAY}
+    command: /bin/bash -c "apt update && apt install -y xfce4 xfce4-terminal && startxfce4"
+
+volumes:
+  kali_data:
+
+networks:
+  kali_network:
