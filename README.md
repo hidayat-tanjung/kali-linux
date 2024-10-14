@@ -1,4 +1,5 @@
 # Kali Linux Docker 
+![papel-pared-brillante-kali-linux-hackers-fondo-oscuro_1197797-221382](https://github.com/user-attachments/assets/82ade9b2-2afd-4d5e-bf64-3f0e5c45cfd1)
 
 **✅ Requirements**:
 * Linux Console
