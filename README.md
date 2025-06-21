@@ -1,103 +1,88 @@
-# Kali Linux Docker 
-![papel-pared-brillante-kali-linux-hackers-fondo-oscuro_1197797-221382](https://github.com/user-attachments/assets/82ade9b2-2afd-4d5e-bf64-3f0e5c45cfd1)
+## Kali Linux Docker Container
+A Docker container setup for Kali Linux with XFCE desktop environment.
 
-**✅ Requirements**:
-* Linux Console
-* Docker Desktop
-* Visual Studio Code 
+## Prerequisites
+- Docker installed
 
-Untuk membuat dan menjalankan Kali Linux di Docker, Anda dapat mengikuti langkah-langkah berikut:
+- X11 server running on the host (for GUI)
 
-1. Instal Docker: Pastikan Docker sudah terinstal di sistem Anda. Anda dapat menginstalnya dengan mengikuti panduan resmi di dokumentasi Docker.
- dalam kontainer, Anda mungkin ingin memperbarui paket dan menginstal alat yang diperlukan.
-2. Tarik image Kali Linux: Gunakan perintah berikut untuk menarik image Kali Linux dari Docker Hub:
-```console
-docker pull kalilinux/kali-rolling
+- Permission to access X11 server (typically run xhost +local:)
+
+## How to Run
+Clone this repository or create a docker-compose.yml file with the provided content
+
+Start the container with:
+
 ```
-3. Jalankan Kontainer Kali Linux: Setelah image berhasil diunduh, Anda dapat menjalankan kontainer dengan perintah berikut:
-```console
-docker run -it kalilinux/kali-rolling /bin/bash
-```
-- -it memungkinkan Anda untuk berinteraksi dengan kontainer.
-- /bin/bash memberikan akses ke shell bash di dalam kontainer.
-4. Perbarui dan Instal Paket: Setelah berada di dalam kontainer, Anda mungkin ingin memperbarui paket dan menginstal alat yang diperlukan. Gunakan perintah berikut:
-```console
-apt update && apt upgrade -y
-```
-Anda juga dapat menginstal alat tambahan, misalnya:
-```console
-apt install nmap metasploit-framework -y
-```
-5. Akses Kontainer: Untuk mengakses shell di dalam kontainer, gunakan perintah berikut:
-```console
-docker exec -it kali_linux /bin/bash
-```
-
-# Tampilan Dekstop
-1. Perbarui docker-compose.yml: Anda perlu menambahkan konfigurasi untuk VNC di file docker-compose.yml. Berikut adalah contoh yang telah dimodifikasi:
-```console
-version: '3.8'
-
-services:
-  kali:
-    image: kalilinux/kali-rolling
-    container_name: kali_linux
-    tty: true
-    stdin_open: true
-    volumes:
-      - kali_data:/root
-    networks:
-      - kali_network
-    ports:
-      - "5901:5901"  # Port untuk VNC
-    environment:
-      - VNC_PASSWORD=password  # Ganti dengan password yang diinginkan
-    command: /bin/bash -c "apt update && apt install -y xfce4 xfce4-terminal tightvncserver && vncserver :1 -geometry 1280x800 -depth 24 && tail -f /dev/null"
-
-volumes:
-  kali_data:
-
-networks:
-  kali_network:
-```
-Penjelasan:
-
-- Menambahkan ports untuk memetakan port VNC.
-- Menginstal XFCE desktop environment dan VNC server.
-- Menjalankan VNC server saat kontainer dimulai.
-2. Jalankan Docker Compose: Jalankan kontainer dengan perintah berikut:
-```console
 docker-compose up -d
 ```
-3. Akses VNC: Gunakan aplikasi VNC viewer (seperti TigerVNC, RealVNC, atau TightVNC) untuk mengakses desktop Kali Linux. Masukkan alamat berikut:
-```console
-localhost:5901
-```
-Masukkan password yang Anda tentukan sebelumnya ketika diminta.
 
-Jika Anda ingin menginstal SEMUA tools Kali (hati-hati, ukurannya besar ~15GB):
-```console
+To access the container shell:
+
+```
+docker exec -it kali_linux bash
+```
+
+## Configuration
+The docker-compose.yml file is pre-configured with:
+
+- Persistent volume to store data in /root
+- Dedicated network for the container
+- GUI support via X11 forwarding
+
+## Installing Kali Linux Tools
+To automatically install Kali Linux tools when the container starts, modify the command section in docker-compose.yml:
+
+Core packages (kali-linux-core):
+
+```yaml
+command: /bin/bash -c "apt update && apt install -y kali-linux-core xfce4 xfce4-terminal && startxfce4"
+```
+
+## All tools (kali-linux-large - ~15GB):
+
+```yaml
 command: /bin/bash -c "apt update && apt install -y kali-linux-large xfce4 xfce4-terminal && startxfce4"
 ```
 
-Alternatif lain jika Anda hanya ingin tools tertentu:
-```console
+Specific tool bundles:
+
+- kali-tools-top10: Top 10 most popular tools
+- kali-tools-web: Web penetration testing tools
+- kali-tools-wireless: Wireless attack tools
+- kali-tools-forensics: Forensic tools
+
+Example:
+
+```yaml
 command: /bin/bash -c "apt update && apt install -y kali-tools-top10 xfce4 xfce4-terminal && startxfce4"
 ```
 
-Beberapa pilihan metapackages yang tersedia:
+Notes
 
-- `kali-linux-core` - Tools dasar saja
+- For kali-linux-large, ensure your host has sufficient disk space and RAM
+- First-time installation may take significant time depending on selected packages
+- Data persists in a Docker volume named kali_data
 
-- `kali-linux-large` - Semua tools
+Troubleshooting
+If GUI doesn't appear:
 
-- `kali-tools-top10` - 10 tools terpopuler
+- Verify X11 server is running
+- Run xhost +local: before starting the container
+- Check permissions on /tmp/.X11-unix
 
-- `kali-tools-web` - Tools web penetration
+To stop the container:
 
-- `kali-tools-wireless` - Tools wireless attacks
+```
+docker-compose down
+```
 
-- `bkali-tools-forensics` - Tools forensik
+## Suggested Container Image Concept
+For a visual representation, consider an image featuring:
 
-Pastikan host Anda memiliki cukup ruang disk dan RAM untuk menangani instalasi yang lebih besar, terutama jika memilih kali-linux-large.
+- Docker whale logo with Kali dragon riding it
+- Terminal window showing docker-compose commands
+- Icons of popular Kali tools (Nmap, Metasploit, etc.)
+- Kali's signature blue/black color scheme with neon accents
 
+You can create this using design tools like Figma or Canva, or find suitable stock images.
