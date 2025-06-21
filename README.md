@@ -21,7 +21,7 @@ docker run -it kalilinux/kali-rolling /bin/bash
 - -it memungkinkan Anda untuk berinteraksi dengan kontainer.
 - /bin/bash memberikan akses ke shell bash di dalam kontainer.
 4. Perbarui dan Instal Paket: Setelah berada di dalam kontainer, Anda mungkin ingin memperbarui paket dan menginstal alat yang diperlukan. Gunakan perintah berikut:
-  ```console
+```console
 apt update && apt upgrade -y
 ```
 Anda juga dapat menginstal alat tambahan, misalnya:
@@ -74,3 +74,30 @@ docker-compose up -d
 localhost:5901
 ```
 Masukkan password yang Anda tentukan sebelumnya ketika diminta.
+
+Jika Anda ingin menginstal SEMUA tools Kali (hati-hati, ukurannya besar ~15GB):
+```console
+command: /bin/bash -c "apt update && apt install -y kali-linux-large xfce4 xfce4-terminal && startxfce4"
+```
+
+Alternatif lain jika Anda hanya ingin tools tertentu:
+```console
+command: /bin/bash -c "apt update && apt install -y kali-tools-top10 xfce4 xfce4-terminal && startxfce4"
+```
+
+Beberapa pilihan metapackages yang tersedia:
+
+- `kali-linux-core` - Tools dasar saja
+
+- `kali-linux-large` - Semua tools
+
+- `kali-tools-top10` - 10 tools terpopuler
+
+- `kali-tools-web` - Tools web penetration
+
+- `kali-tools-wireless` - Tools wireless attacks
+
+- `bkali-tools-forensics` - Tools forensik
+
+Pastikan host Anda memiliki cukup ruang disk dan RAM untuk menangani instalasi yang lebih besar, terutama jika memilih kali-linux-large.
+
