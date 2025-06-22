@@ -86,3 +86,10 @@ For a visual representation, consider an image featuring:
 - Kali's signature blue/black color scheme with neon accents
 
 You can create this using design tools like Figma or Canva, or find suitable stock images.
+
+## References
+
+- [Kali Linux Documentation](https://www.kali.org/docs/)
+- [Docker Documentation](https://docs.docker.com/)
+- [Kali Docker Images](https://hub.docker.com/r/kalilinux/kali-linux-docker)
+
